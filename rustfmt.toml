@@ -1,0 +1,5 @@
+# use_small_heuristics = "Off"       # Disables heuristics that shorten lines automatically
+# max_width = 150                    # Default is 100, increase to allow longer lines
+# format_strings = true              # Ensures string literals are also formatted properly
+# wrap_comments = false              # Prevents automatic wrapping of comments
+struct_field_align_threshold = 100
