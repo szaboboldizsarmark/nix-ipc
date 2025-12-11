@@ -1,5 +1,5 @@
-pub use mtx::{LockResult, Mtx};
+pub use r_mtx::{LockResult, RMtx};
 pub use shm::Shm;
 
-mod mtx;
+mod r_mtx;
 mod shm;

@@ -37,7 +37,8 @@ pub struct Shm<T: 'static> {
 }
 
 impl<T: 'static> Shm<T> {
-    /// Creates or opens a shared memory object in /dev/shm and maps it.
+    /// Creates and opens object in /dev/shm and maps it.
+    /// The generic type T, representing the shared data, should almost always be `#[repr(C)]`.   
     pub fn new(name: &str) -> Result<Self> {
         let path = format!("/dev/shm/{}", name);
         let shm_size = size_of::<T>();
@@ -64,13 +65,9 @@ impl<T: 'static> Shm<T> {
             )?
         };
 
-        let data_ptr = raw_ptr.as_ptr() as *mut UnsafeCell<T>;
+        let ptr = raw_ptr.as_ptr() as *mut UnsafeCell<T>;
 
-        Ok(Self {
-            _fd: fd,
-            ptr: data_ptr,
-            len,
-        })
+        Ok(Self { _fd: fd, ptr, len })
     }
 
     /// Provides exclusive access to the shared memory data using a closure.

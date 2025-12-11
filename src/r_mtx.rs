@@ -34,12 +34,13 @@ pub enum LockResult {
     OwnerDiedRecovered,
 }
 
-pub struct Mtx {
+/// An interprocess, robust mutex implemented using `pthread_mutex_t` and shared memory.
+pub struct RMtx {
     _fd: OwnedFd,
     ptr: *mut pthread_mutex_t,
 }
 
-impl Mtx {
+impl RMtx {
     pub fn new(name: &str) -> Result<Self> {
         let path = format!("/dev/shm/{}.mtx", name);
         let fd = open(
@@ -120,7 +121,7 @@ impl Mtx {
     }
 }
 
-impl Drop for Mtx {
+impl Drop for RMtx {
     fn drop(&mut self) {
         unsafe {
             // Don't destroy the on-disk mutex so it remains valid for other processes
